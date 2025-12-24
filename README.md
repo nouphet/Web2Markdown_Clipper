@@ -31,6 +31,15 @@ We are deeply grateful to the original developers of MarkDownload for their pion
 - **Turndown**: For HTML to Markdown conversion.
 - **Service Workers**: Logic handling for background tasks (context menus, batch downloads).
 
+## Recommended Sites for Testing
+
+To verify the functionality of the clipper, we recommend testing on the following types of websites which have structured content:
+
+- **Wikipedia**: Great for testing complex formatting, tables, and references.
+- **MDN Web Docs**: Excellent for testing code blocks and technical documentation.
+- **Dev.to / Medium**: Good for testing blog post extraction and image handling.
+- **GitHub READMEs**: Useful to see how it handles existing Markdown-like structures.
+
 ## Packaging for Chrome Web Store
 
 To create a valid zip file for the Chrome Web Store submission, you can use the provided Makefile (if `make` is installed) or run the PowerShell command directly.

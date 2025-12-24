@@ -10,14 +10,23 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 // Handle Context Menu Clicks
-chrome.contextMenus.onClicked.addListener((info, tab) => {
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     if (info.menuItemId === "clip-selection") {
-        // We can inject a script to get selection or generic markdown conversion
-        // For selection, Turndown can convert the selection HTML directly.
-        chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            func: convertSelectionToMarkdown
-        });
+        // Inject scripts first to ensure Turndown and content logic are available
+        try {
+            await chrome.scripting.executeScript({
+                target: { tabId: tab.id },
+                files: ['libs/Readability.js', 'libs/turndown.js', 'content.js']
+            });
+
+            // Now execute the conversion
+            chrome.scripting.executeScript({
+                target: { tabId: tab.id },
+                func: convertSelectionToMarkdown
+            });
+        } catch (err) {
+            console.error("Script injection failed", err);
+        }
     }
 });
 
@@ -25,24 +34,39 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 async function convertSelectionToMarkdown() {
     try {
         const selection = window.getSelection();
-        if (selection.rangeCount === 0) return;
+        if (selection.rangeCount === 0) {
+            alert("No text selected!");
+            return;
+        }
 
         const container = document.createElement('div');
         container.appendChild(selection.getRangeAt(0).cloneContents());
 
-        // We rely on Turndown being available in the global scope (injected via content scripts matches)
-        // NOTE: In MV3, we can't easily rely on global window vars from other content scripts unless declared in manifest content_scripts
-        // Since we put Turndown in content_scripts, it SHOULD be available in the window context of the content script world.
+        // TurndownService is now available because we injected libs/turndown.js
+        // We can access it from the window scope if it attached there, or if we want to be safe,
+        // we can use the logic from content.js if we send a message.
+        // But since we are in a func injection, we are in the same world.
 
-        // However, executeScript runs in a separate world or same world depending on config. 
-        // Safest is to just do basic text or re-inject logic if needed. 
-        // For MVP, we'll try to access the global TurndownService if available, or just copy text.
+        let markdown = "";
+        if (typeof TurndownService !== 'undefined') {
+            const turndownService = new TurndownService({
+                headingStyle: 'atx',
+                codeBlockStyle: 'fenced'
+            });
+            markdown = turndownService.turndown(container.innerHTML);
+        } else {
+            // Fallback if turndown fails to load for some reason
+            markdown = container.innerText;
+        }
 
-        // A more robust way for "Clip Selection" is asking the content script to do it via message.
-        chrome.runtime.sendMessage({ action: "clip-selection-internal" }); // Send to content script? No, content script listens to runtime.onMessage
+        // Copy to clipboard
+        navigator.clipboard.writeText(markdown).then(() => {
+            // Optional: Provide visual feedback?
+            console.log("Markdown copied to clipboard");
+        }).catch(err => {
+            console.error("Failed to copy", err);
+        });
 
-        // Let's rely on standard copy for now or alert user implemented later.
-        console.log("Selection clipping initiated");
     } catch (e) {
         console.error(e);
     }
