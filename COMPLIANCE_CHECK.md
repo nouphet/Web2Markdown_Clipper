@@ -20,7 +20,6 @@ The following permissions are requested in `manifest.json`. You must provide the
 | :--- | :--- |
 | `activeTab` | Access the title and URL of the current tab to generate the Markdown front-matter. |
 | `scripting` | Inject `Readability.js` and content scripts into the page to extract content. |
-| `storage` | Save user preferences (though currently not heavily used, it is standard for options). |
 | `downloads` | Save the generated `.md` file to the user's computer. |
 | `contextMenus` | Provide the "right-click to clip" functionality. |
 | `clipboardWrite` | Allow the user to copy the Markdown content to their clipboard via the popup button. |

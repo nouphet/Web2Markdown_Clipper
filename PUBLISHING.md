@@ -91,7 +91,6 @@ Web2Markdown Clipperは、Webページをクリップして、きれいで読み
   - **権限が必要な理由 (Permissions Justification)**:
     - **activeTab**: `To access the title and URL of the currently active tab for the Markdown front matter.`
     - **scripting**: `To inject the Readability and Turndown scripts into the page to parse the HTML content.`
-    - **storage**: `To save user preferences and configuration settings.`
     - **downloads**: `To save the generated Markdown file to the user's local downloads folder.`
     - **contextMenus**: `To provide the "Clip Selection" option in the right-click menu.`
     - **clipboardWrite**: `To allow the user to copy the generated Markdown text to their clipboard.`
