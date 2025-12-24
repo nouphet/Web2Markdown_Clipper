@@ -30,3 +30,17 @@ We are deeply grateful to the original developers of MarkDownload for their pion
 - **Readability.js**: For article extraction.
 - **Turndown**: For HTML to Markdown conversion.
 - **Service Workers**: Logic handling for background tasks (context menus, batch downloads).
+
+## Packaging for Chrome Web Store
+
+To create a valid zip file for the Chrome Web Store submission, you can use the provided Makefile (if `make` is installed) or run the PowerShell command directly.
+
+### Using Make
+```bash
+make clean zip
+```
+
+### Using PowerShell
+```powershell
+Compress-Archive -Path manifest.json, background.js, content.js, popup, icons, libs, README.md, README.ja.md, PUBLISHING.md, COMPLIANCE_CHECK.md -DestinationPath Web2Markdown_Clipper.zip -Force
+```

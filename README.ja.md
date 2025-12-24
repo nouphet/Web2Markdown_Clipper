@@ -30,3 +30,17 @@ MarkDownloadのオリジナルの開発者の方々の先駆的な取り組み�
 - **Readability.js**: 記事の抽出に使用します。
 - **Turndown**: HTMLからMarkdownへの変換に使用します。
 - **Service Workers**: バックグラウンドタスク（コンテキストメニュー、バッチダウンロード）のロジック処理に使用します。
+
+## Chrome ウェブストアへのパッケージ化
+
+Chrome ウェブストアへの提出用に有効なZIPファイルを作成するには、Makefile（`make`がインストールされている場合）を使用するか、PowerShellコマンドを直接実行します。
+
+### Make を使用する場合
+```bash
+make clean zip
+```
+
+### PowerShell を使用する場合
+```powershell
+Compress-Archive -Path manifest.json, background.js, content.js, popup, icons, libs, README.md, README.ja.md, PUBLISHING.md, COMPLIANCE_CHECK.md -DestinationPath Web2Markdown_Clipper.zip -Force
+```
