@@ -49,6 +49,12 @@ Chrome ウェブストアへの提出用に有効なZIPファイルを作成す�
 make clean zip
 ```
 
+### ターミナルを使用する場合 (Linux/Mac)
+基本的には上記の `make` が使用できますが、`zip` コマンドで直接作成することも可能です：
+```bash
+zip -r Web2Markdown_Clipper.zip manifest.json background.js content.js popup icons libs README.md README.ja.md PUBLISHING.md COMPLIANCE_CHECK.md LICENSE
+```
+
 ### PowerShell を使用する場合
 ```powershell
 Compress-Archive -Path manifest.json, background.js, content.js, popup, icons, libs, README.md, README.ja.md, PUBLISHING.md, COMPLIANCE_CHECK.md -DestinationPath Web2Markdown_Clipper.zip -Force

@@ -49,6 +49,12 @@ To create a valid zip file for the Chrome Web Store submission, you can use the 
 make clean zip
 ```
 
+### Using Terminal (Linux/Mac)
+You can likely use `make` as above, or run the zip command directly:
+```bash
+zip -r Web2Markdown_Clipper.zip manifest.json background.js content.js popup icons libs README.md README.ja.md PUBLISHING.md COMPLIANCE_CHECK.md LICENSE
+```
+
 ### Using PowerShell
 ```powershell
 Compress-Archive -Path manifest.json, background.js, content.js, popup, icons, libs, README.md, README.ja.md, PUBLISHING.md, COMPLIANCE_CHECK.md -DestinationPath Web2Markdown_Clipper.zip -Force
